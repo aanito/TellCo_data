@@ -1,4 +1,6 @@
 #ignore the venv
 tellco/
 #ignore the sql file
+data/
 telecom.sql
+.env
