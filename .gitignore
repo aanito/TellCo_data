@@ -1,0 +1,4 @@
+#ignore the venv
+tellco/
+#ignore the sql file
+telecom.sql
