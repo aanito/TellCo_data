@@ -381,16 +381,169 @@ A correlation matrix was created for columns like "Social Media DL", "Google DL"
 Code Example:
 
 python
-Copy code
 
 # Compute correlation matrix
 
 correlation_matrix = data[['Social Media DL (Bytes)', 'Google DL (Bytes)', 'Email DL (Bytes)', 'Youtube DL (Bytes)', 'Netflix DL (Bytes)', 'Gaming DL (Bytes)', 'Other DL (Bytes)']].corr()
 print(correlation_matrix)
-Interpretation:
 
-Strong correlations between similar applications (e.g., Social Media and Google traffic). 8. Dimensionality Reduction: PCA
-Objective: Perform Principal Component Analysis (PCA) to reduce data dimensions and interpret results.
+Report on Correlation Analysis of Download (DL) and Upload (UL) Data Usage
+
+1. Objective
+
+The objective of this analysis is to assess the correlation between specific app usage categories and overall data consumption, measured as Total DL (Bytes) and Total UL (Bytes). This provides insights into the contributions of various apps to total network traffic and informs data management and optimization strategies.
+
+2. Key Findings
+
+2.1 Download (DL) Correlations
+
+App Category
+
+Correlation with Total DL
+
+HTTP DL (Bytes)
+
+-0.007058
+
+Social Media DL (Bytes)
+
+0.005164
+
+Google DL (Bytes)
+
+0.012189
+
+Email DL (Bytes)
+
+0.004395
+
+YouTube DL (Bytes)
+
+0.025685
+
+Netflix DL (Bytes)
+
+0.024386
+
+Gaming DL (Bytes)
+
+0.999131
+
+Other DL (Bytes)
+
+-0.002709
+
+Total DL (Bytes)
+
+1.000000
+
+Observations:
+
+Gaming DL (Bytes) has an extremely strong positive correlation (0.999), indicating that most of the total download traffic is driven by gaming activities.
+
+YouTube DL (0.026) and Netflix DL (0.024) show weak positive correlations, suggesting a minor contribution to total downloads.
+
+Other app categories (e.g., HTTP DL, Social Media DL, Google DL, Email DL) exhibit negligible or near-zero correlations, implying minimal impact on total download data usage.
+
+A slightly negative correlation for Other DL (-0.003) and HTTP DL (-0.007) suggests these categories might not be significant contributors to total download traffic.
+
+2.2 Upload (UL) Correlations
+
+App Category
+
+Correlation with Total UL
+
+HTTP UL (Bytes)
+
+0.001126
+
+Social Media UL (Bytes)
+
+-0.000204
+
+Google UL (Bytes)
+
+0.102113
+
+Email UL (Bytes)
+
+0.022332
+
+YouTube UL (Bytes)
+
+0.563917
+
+Netflix UL (Bytes)
+
+0.561779
+
+Gaming UL (Bytes)
+
+0.419690
+
+Other UL (Bytes)
+
+0.417413
+
+Total UL (Bytes)
+
+1.000000
+
+Observations:
+
+YouTube UL (0.564) and Netflix UL (0.562) have the highest correlations, indicating that these apps significantly contribute to total upload traffic.
+
+Gaming UL (0.420) and Other UL (0.417) also show moderately strong correlations, reflecting their role in generating upload traffic.
+
+Google UL (0.102), Email UL (0.022), and HTTP UL (0.001) have weak positive correlations, suggesting a minimal impact on total uploads.
+
+Social Media UL (-0.0002) shows a negligible or near-zero correlation, indicating no meaningful contribution to upload traffic.
+
+3. Recommendations
+
+3.1 Network Optimization
+
+Focus on Gaming Traffic:
+
+Optimize download speeds and caching for gaming-related traffic, as it is the dominant contributor to total downloads.
+
+Consider enhancing server capacity and reducing latency for gaming services.
+
+Enhance Upload Support for YouTube and Netflix:
+
+Invest in upload bandwidth capacity to support significant upload traffic from streaming apps like YouTube and Netflix.
+
+Partner with these platforms to explore edge computing or content delivery networks (CDNs).
+
+Monitor Other Traffic Categories:
+
+Regularly analyze app categories with weak correlations (e.g., HTTP, Social Media) to detect emerging trends or shifts in user behavior.
+
+3.2 User Engagement Strategies
+
+Gaming Promotions:
+
+Offer data packages tailored for gaming enthusiasts, emphasizing high download speeds and reduced latency.
+
+Video Streaming Campaigns:
+
+Promote data plans targeting users of YouTube and Netflix, ensuring sufficient upload capacity for content creators.
+
+Balanced Packages:
+
+Design balanced data plans combining both download- and upload-intensive activities to cater to a wider audience.
+
+3.3 Further Analysis
+
+Conduct time-series analysis to observe seasonal or periodic fluctuations in app usage.
+
+Perform clustering to identify user groups based on download and upload behavior.
+
+Examine user satisfaction and performance metrics for apps with high correlation to optimize service delivery further.
+
+4. Conclusion
+
+This correlation analysis highlights that gaming and streaming apps (YouTube, Netflix) are significant drivers of total network traffic, with gaming dominating downloads and streaming apps contributing notably to uploads. Strategic investments in network infrastructure and tailored user engagement strategies can enhance service delivery and user satisfaction while optimizing resource allocation for high-demand activities.
 
 Steps Taken:
 

@@ -9,17 +9,16 @@ import pandas as pd
 load_dotenv()
 
 # Retrieve the PostgreSQL connection details
-DB_USER = os.getenv('DB_USER').strip()
-DB_PASSWORD = os.getenv('DB_PASSWORD').strip()
-DB_HOST = os.getenv('DB_HOST').strip()
-DB_PORT = os.getenv('DB_PORT').strip()
-DB_NAME = os.getenv('DB_NAME').strip()
+DB_USER = os.getenv('DB_USER').split('#')[0].strip()
+DB_PASSWORD = os.getenv('DB_PASSWORD').split('#')[0].strip()
+DB_HOST = os.getenv('DB_HOST').split('#')[0].strip()
+# DB_HOST = os.getenv('DB_HOST').strip()
+DB_PORT = os.getenv('DB_PORT').split('#')[0].strip()
+# DB_PORT = os.getenv('DB_PORT').strip()
+DB_NAME = os.getenv('DB_NAME').split('#')[0].strip()
 
-
-print(f"DB_PORT={DB_PORT}")
 # Create the connection string
 connection_string = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
-
 
 # Create an SQLAlchemy engine to connect to the database
 engine = create_engine(connection_string)
