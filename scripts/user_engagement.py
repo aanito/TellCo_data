@@ -1,11 +1,31 @@
-import pandas as pd
+from dotenv import load_dotenv
+import os
 from sqlalchemy import create_engine
 
-# Connect to the PostgreSQL database
-engine = create_engine('postgresql://postgres:yourpassword@localhost:5432/telecom_db')
+import pandas as pd
+
+
+# Load environment variables from the .env file
+load_dotenv()
+
+# Retrieve the PostgreSQL connection details
+DB_USER = os.getenv('DB_USER').strip()
+DB_PASSWORD = os.getenv('DB_PASSWORD').strip()
+DB_HOST = os.getenv('DB_HOST').strip()
+DB_PORT = os.getenv('DB_PORT').strip()
+DB_NAME = os.getenv('DB_NAME').strip()
+
+
+print(f"DB_PORT={DB_PORT}")
+# Create the connection string
+connection_string = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+
+
+# Create an SQLAlchemy engine to connect to the database
+engine = create_engine(connection_string)
 
 # Query the dataset
-data = pd.read_sql('SELECT * FROM telecom_data;', engine)
+data = pd.read_sql('SELECT * FROM xdr_data;', engine)
 
 # Aggregate engagement metrics by customer
 user_engagement = data.groupby('MSISDN/Number').agg({
