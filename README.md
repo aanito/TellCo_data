@@ -545,13 +545,15 @@ Examine user satisfaction and performance metrics for apps with high correlation
 
 This correlation analysis highlights that gaming and streaming apps (YouTube, Netflix) are significant drivers of total network traffic, with gaming dominating downloads and streaming apps contributing notably to uploads. Strategic investments in network infrastructure and tailored user engagement strategies can enhance service delivery and user satisfaction while optimizing resource allocation for high-demand activities.
 
+#PCA_Analysis
+
 Steps Taken:
 
 Used PCA from sklearn to reduce dimensions of the dataset and analyze the most important features.
 Code Example:
 
 python
-Copy code
+
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 
@@ -576,10 +578,75 @@ plt.show()
 print(f"Explained variance ratio: {pca.explained*variance_ratio*}")
 Findings:
 
-Two principal components explained most of the variance in application data usage, highlighting the importance of traffic from major apps like YouTube and Netflix.
-Task 2 - User Engagement Analysis
-2.1 - Aggregate Engagement Metrics
-Objective: Aggregate metrics (sessions frequency, session duration, total traffic) per customer ID (MSISDN) and report top 10 customers.
+Report on Principal Component Analysis (PCA)
+
+1. Introduction to PCA and Its Importance
+   Principal Component Analysis (PCA) is a dimensionality reduction technique widely used to analyze and interpret large datasets. It transforms original variables into a smaller set of uncorrelated variables called principal components (PCs) while retaining as much variance in the data as possible. PCA is particularly valuable when:
+
+There are highly correlated features (e.g., in our data, DL and UL metrics are likely correlated).
+Visualization of high-dimensional data is needed.
+Simplification of complex datasets is required for predictive modeling or clustering. 2. Why PCA is Needed in This Analysis
+Considering both download (DL) and upload (UL) data types, the dataset contains a significant number of features that are interrelated (e.g., Gaming DL and Gaming UL). Directly analyzing or modeling with all features may lead to:
+
+Redundancy: Correlated features add no new information.
+Overfitting: Redundant features can complicate predictive models.
+Interpretation Challenges: Too many variables can obscure insights.
+PCA can address these issues by identifying the key components (or axes) of variability in the data and allowing for a more straightforward, interpretable analysis.
+
+3. Steps in PCA
+   The following steps outline how PCA was performed on the dataset:
+
+Data Preprocessing:
+
+Ensured all features (DL and UL metrics) are numerical.
+Standardized the data to have a mean of 0 and standard deviation of 1, as PCA is sensitive to feature scaling.
+Covariance Matrix Calculation:
+
+Computed the covariance matrix to understand relationships between features (e.g., Netflix DL and Netflix UL).
+Eigenvalue and Eigenvector Computation:
+
+Extracted eigenvalues and eigenvectors from the covariance matrix. Eigenvalues indicate the amount of variance explained by each principal component.
+Selecting Principal Components:
+
+Ranked the eigenvalues to determine the most significant components.
+Chose a subset of components that explained a high percentage of the variance (e.g., 90%).
+Projection:
+
+Transformed the original features into the new PCA space defined by the principal components.
+Visualization:
+
+Created scatterplots or heatmaps to visualize the transformed data and relationships between components.
+
+PCA Results and Recommendations
+Analysis of Results
+Explained Variance:
+
+The first two principal components (PC1 and PC2) account for approximately 28.79% of the total variance in the data.
+Each of these components individually explains about 14.4% of the variance, indicating a balanced contribution.
+Interpretation:
+
+While PCA reduced the dimensions of the dataset, the two components capture less than one-third of the total variability in the data. This suggests that the dataset is complex, with significant variation spread across multiple dimensions.
+Recommendations
+Further Dimensionality Reduction:
+
+Retaining only two components is suitable for visualization but may not be sufficient for analysis. Consider increasing the number of components to capture more variance (e.g., up to 90% of the variance for robust analysis).
+Use the n_components parameter adaptively (e.g., PCA(n_components=0.9) to retain 90% of variance).
+Feature Selection:
+
+Review the features to determine if all of them are relevant. Features with low variance or minimal impact on the target outcome could be excluded before performing PCA to improve its effectiveness.
+Interpret Component Loadings:
+
+Analyze the PCA loadings (the weights of each original feature in the principal components) to understand which features contribute the most to each component. This insight can help identify key drivers of data variability.
+Augment with Domain Knowledge:
+
+Use domain expertise to combine PCA with insights from correlation analysis. For example, features with high correlation to Total Data (Bytes) or other target metrics could be emphasized in downstream analyses.
+Alternative Techniques:
+
+If PCA does not sufficiently reduce complexity or improve insights, consider other dimensionality reduction methods like t-SNE (for clustering/visualization) or Autoencoders (if working with neural networks).
+Action Plan for Data-Driven Decisions:
+
+Focus on features heavily influencing PC1 and PC2 to inform data usage optimization strategies.
+Use these findings to design tailored recommendations for customer behavior, such as incentivizing specific applications or content categories.
 
 Steps Taken:
 
@@ -588,7 +655,6 @@ Used groupby() to compute the total session duration and data usage per customer
 Code Example:
 
 python
-Copy code
 
 # Aggregate metrics per customer
 
