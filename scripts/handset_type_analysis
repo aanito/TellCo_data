@@ -1,0 +1,72 @@
+from dotenv import load_dotenv
+import os
+from sqlalchemy import create_engine
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load environment variables from the .env file
+load_dotenv()
+
+def clean_env_var(var_name):
+    """Cleans environment variable by removing comments and whitespace."""
+    return os.getenv(var_name).split('#')[0].strip()
+
+# Database connection details
+DB_USER = clean_env_var('DB_USER')
+DB_PASSWORD = clean_env_var('DB_PASSWORD')
+DB_HOST = clean_env_var('DB_HOST')
+DB_PORT = clean_env_var('DB_PORT')
+DB_NAME = clean_env_var('DB_NAME')
+
+# Create the connection string
+connection_string = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+
+# Create an SQLAlchemy engine to connect to the database
+engine = create_engine(connection_string)
+
+# Query the dataset
+data = pd.read_sql('SELECT * FROM xdr_data;', engine)
+
+# Ensure relevant columns are numeric
+numeric_columns = ['TCP DL Retrans. Vol (Bytes)', 'Avg Bearer TP DL (kbps)']
+data[numeric_columns] = data[numeric_columns].apply(pd.to_numeric, errors='coerce')
+
+# Handle missing values by replacing them with the mean of the respective column
+data[numeric_columns] = data[numeric_columns].fillna(data[numeric_columns].mean())
+
+# Distribution of average throughput per handset type
+throughput_per_handset = data.groupby('Handset Type')['Avg Bearer TP DL (kbps)'].mean().sort_values(ascending=False)
+
+# Save distribution to a CSV file
+throughput_per_handset.to_csv('data/throughput_per_handset.csv')
+
+# Plot distribution
+plt.figure(figsize=(12, 6))
+thru_plot = sns.barplot(x=throughput_per_handset.index[:10], y=throughput_per_handset.values[:10])
+thru_plot.set_xticklabels(thru_plot.get_xticklabels(), rotation=45, horizontalalignment='right')
+plt.title('Top 10 Handset Types by Average Throughput')
+plt.xlabel('Handset Type')
+plt.ylabel('Average Throughput (kbps)')
+plt.tight_layout()
+plt.savefig('data/throughput_per_handset_plot.png')
+plt.show()
+
+# Average TCP retransmission per handset type
+tcp_per_handset = data.groupby('Handset Type')['TCP DL Retrans. Vol (Bytes)'].mean().sort_values(ascending=False)
+
+# Save distribution to a CSV file
+tcp_per_handset.to_csv('data/tcp_per_handset.csv')
+
+# Plot distribution
+plt.figure(figsize=(12, 6))
+tcp_plot = sns.barplot(x=tcp_per_handset.index[:10], y=tcp_per_handset.values[:10])
+tcp_plot.set_xticklabels(tcp_plot.get_xticklabels(), rotation=45, horizontalalignment='right')
+plt.title('Top 10 Handset Types by Average TCP Retransmission Volume')
+plt.xlabel('Handset Type')
+plt.ylabel('Average TCP Retransmission Volume (Bytes)')
+plt.tight_layout()
+plt.savefig('data/tcp_per_handset_plot.png')
+plt.show()
+
+print("Handset type analysis completed successfully.")
