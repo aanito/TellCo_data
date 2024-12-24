@@ -26,6 +26,18 @@ engine = create_engine(connection_string)
 # Query the dataset
 data = pd.read_sql('SELECT * FROM xdr_data;', engine)
 
+# Calculate total traffic
+data['Total Data (Bytes)'] = data['Total DL (Bytes)'] + data['Total UL (Bytes)']
+
+# Aggregate engagement metrics by customer
+user_engagement = data.groupby('MSISDN/Number').agg({
+    'Dur. (ms)': 'sum',
+    'Total DL (Bytes)': 'sum',
+    'Total UL (Bytes)': 'sum',
+    'Total Data (Bytes)': 'sum',
+    'MSISDN/Number': 'count'
+}).rename(columns={'MSISDN/Number': 'Session Count'})
+
 
 # Aggregate traffic by application and find top 10 users per application
 application_columns = [
@@ -72,4 +84,4 @@ plt.ylabel('Frequency')
 plt.savefig('data/data_usage_histogram.png')
 plt.close()
 
-print("trafic analysis completed. Results are saved in the 'data' folder.")
+print("Visualization completed. Results are saved in the 'data' folder.")

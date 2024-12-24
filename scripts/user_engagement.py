@@ -26,14 +26,6 @@ engine = create_engine(connection_string)
 # Query the dataset
 data = pd.read_sql('SELECT * FROM xdr_data;', engine)
 
-# Aggregate engagement metrics by customer
-# user_engagement = data.groupby('MSISDN/Number').agg({
-#     'Dur. (ms)': 'sum',
-#     'Total DL (Bytes)': 'sum',
-#     'Total UL (Bytes)': 'sum',
-#     'MSISDN/Number': 'count'
-# }).rename(columns={'MSISDN/Number': 'Session Count'})
-
 # Calculate total traffic
 data['Total Data (Bytes)'] = data['Total DL (Bytes)'] + data['Total UL (Bytes)']
 
@@ -49,9 +41,6 @@ user_engagement = data.groupby('MSISDN/Number').agg({
 # Save aggregated user engagement metrics
 user_engagement.to_csv('data/user_engagement.csv', index=False)
 
-# Top 10 customers by session frequency
-# top_customers_by_sessions = user_engagement.sort_values(by='Session Count', ascending=False).head(10)
-# top_customers_by_sessions.to_csv('data/top_customers_by_sessions.csv', index=False)
 
 # Top 10 customers by engagement metrics
 metrics = ['Dur. (ms)', 'Total DL (Bytes)', 'Total UL (Bytes)', 'Session Count']
